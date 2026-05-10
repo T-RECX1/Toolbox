@@ -169,6 +169,19 @@
     await seeked;
   }
 
+  function waitForVideoFrame(video) {
+    if ("requestVideoFrameCallback" in video) {
+      return new Promise((resolve) => {
+        const timeout = window.setTimeout(resolve, 160);
+        video.requestVideoFrameCallback(() => {
+          window.clearTimeout(timeout);
+          resolve();
+        });
+      });
+    }
+    return new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  }
+
   function getOutputSize() {
     const sourceWidth = dom.sourcePreview.videoWidth || 480;
     const sourceHeight = dom.sourcePreview.videoHeight || 270;
@@ -208,7 +221,6 @@
   function lzwEncode(minCodeSize, indices) {
     const clearCode = 1 << minCodeSize;
     const endCode = clearCode + 1;
-    let nextCode = endCode + 1;
     let codeSize = minCodeSize + 1;
     let bitBuffer = 0;
     let bitCount = 0;
@@ -224,43 +236,18 @@
       }
     };
 
-    const createDictionary = () => {
-      const dictionary = new Map();
-      for (let i = 0; i < clearCode; i += 1) {
-        dictionary.set(String.fromCharCode(i), i);
-      }
-      return dictionary;
-    };
-
-    let dictionary = createDictionary();
+    let codesSinceClear = 0;
     writeCode(clearCode);
 
-    let phrase = String.fromCharCode(indices[0] || 0);
-    for (let i = 1; i < indices.length; i += 1) {
-      const character = String.fromCharCode(indices[i]);
-      const phrasePlus = phrase + character;
-
-      if (dictionary.has(phrasePlus)) {
-        phrase = phrasePlus;
-      } else {
-        writeCode(dictionary.get(phrase));
-        if (nextCode < 4096) {
-          dictionary.set(phrasePlus, nextCode);
-          nextCode += 1;
-          if (nextCode === 1 << codeSize && codeSize < 12) {
-            codeSize += 1;
-          }
-        } else {
-          writeCode(clearCode);
-          dictionary = createDictionary();
-          nextCode = endCode + 1;
-          codeSize = minCodeSize + 1;
-        }
-        phrase = character;
+    for (let i = 0; i < indices.length; i += 1) {
+      if (codesSinceClear >= 240) {
+        writeCode(clearCode);
+        codeSize = minCodeSize + 1;
+        codesSinceClear = 0;
       }
+      writeCode(indices[i]);
+      codesSinceClear += 1;
     }
-
-    writeCode(dictionary.get(phrase));
     writeCode(endCode);
 
     if (bitCount > 0) {
@@ -311,7 +298,7 @@
 
     addFrame(indices) {
       this.writeString("!\xf9\u0004");
-      this.bytes.push(0x08);
+      this.bytes.push(0x04);
       this.writeShort(this.frameDelay);
       this.bytes.push(0x00, 0x00);
       this.bytes.push(0x2c);
@@ -364,6 +351,9 @@
       for (let index = 0; index < frameCount; index += 1) {
         const position = frameCount === 1 ? start : start + (duration * index) / frameCount;
         await seekVideo(position);
+        await waitForVideoFrame(dom.sourcePreview);
+        context.fillStyle = "#000";
+        context.fillRect(0, 0, width, height);
         context.drawImage(dom.sourcePreview, 0, 0, width, height);
         const imageData = context.getImageData(0, 0, width, height);
         writer.addFrame(quantizeImageData(imageData));
