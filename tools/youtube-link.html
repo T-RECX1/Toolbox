@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Parse YouTube links and prepare video or audio-intent sharing links.">
+    <title>YouTube Link | Personal Toolbox</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+  </head>
+  <body class="tool-page tool-youtube">
+    <header class="site-nav">
+      <a class="brand-mark" href="../index.html" aria-label="Personal Toolbox home">
+        <span class="brand-glyph" aria-hidden="true"></span>
+        <span>Toolbox</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="../index.html#tools">Tools</a>
+        <a href="#linker">Linker</a>
+        <a href="#details">Details</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="tool-hero section-band">
+        <div class="hero-copy reveal">
+          <div class="tool-title-row">
+            <span class="tool-hero-icon" data-icon="youtube" aria-hidden="true"></span>
+            <p class="eyebrow">YouTube Link</p>
+          </div>
+          <h1>Paste a link. Choose video or audio.</h1>
+          <p class="hero-text">Prepare clean YouTube watch, embed, thumbnail, and audio-intent links from one focused red workspace.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#linker">Start parsing</a>
+            <a class="button secondary" href="../index.html#tools">All tools</a>
+          </div>
+        </div>
+
+        <div class="tool-hero-visual reveal" aria-label="YouTube link interface illustration">
+          <div class="youtube-hero-object">
+            <div class="youtube-object-top">
+              <span></span>
+              <strong>Link router</strong>
+              <small>video / audio</small>
+            </div>
+            <div class="youtube-hero-screen">
+              <div class="play-prism large"></div>
+            </div>
+            <div class="youtube-mode-rail">
+              <i>Video</i>
+              <b>Audio</b>
+            </div>
+            <div class="youtube-wave-rail">
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <div class="youtube-link-pill">
+              <span></span>
+              youtu.be / watch
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="linker" class="section-band youtube-linker-band">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Linker</p>
+          <h2>A clean router for YouTube links.</h2>
+          <p>Paste a YouTube URL, select the intent, then copy the watch link, embed link, or thumbnail link.</p>
+        </div>
+
+        <div class="youtube-workspace reveal">
+          <aside class="youtube-control-object">
+            <label class="field youtube-url-field">
+              <span>YouTube URL</span>
+              <input id="youtubeUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." autocomplete="off">
+            </label>
+
+            <div class="mode-toggle" role="group" aria-label="Choose output intent">
+              <button id="youtubeVideoMode" class="active" type="button">Video</button>
+              <button id="youtubeAudioMode" type="button">Audio</button>
+            </div>
+
+            <div class="youtube-stats" aria-label="YouTube link details">
+              <span>Video ID <strong id="youtubeId">-</strong></span>
+              <span>Mode <strong id="youtubeMode">Video</strong></span>
+              <span>Start <strong id="youtubeStart">0s</strong></span>
+            </div>
+
+            <div class="youtube-actions">
+              <button id="youtubeCopyWatch" class="button primary" disabled>Copy Watch Link</button>
+              <button id="youtubeCopyEmbed" class="button secondary" disabled>Copy Embed Link</button>
+              <button id="youtubeCopyThumb" class="button secondary" disabled>Copy Thumbnail</button>
+              <a id="youtubeOpen" class="button secondary disabled" href="#" target="_blank" rel="noreferrer" aria-disabled="true">Open on YouTube</a>
+            </div>
+
+            <div class="progress-wrap youtube-progress">
+              <div class="progress-label">
+                <span id="youtubeStatus">Waiting for a YouTube link</span>
+                <span id="youtubeKind">idle</span>
+              </div>
+              <div class="progress-track">
+                <span id="youtubeProgress"></span>
+              </div>
+            </div>
+          </aside>
+
+          <section class="youtube-preview-object">
+            <div class="preview-header">
+              <span id="youtubePreviewTitle">Video preview</span>
+              <small id="youtubeMeta">Paste a link to begin</small>
+            </div>
+            <div class="youtube-preview-stage" id="youtubePreviewStage">
+              <iframe id="youtubeFrame" title="YouTube video preview" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+              <div id="youtubeAudioPreview" class="youtube-audio-preview" hidden>
+                <div class="youtube-audio-core">
+                  <span></span>
+                  <strong>Audio intent</strong>
+                  <small>Use this mode for owned or licensed sources in a compliant media workflow.</small>
+                </div>
+                <div class="youtube-audio-bars">
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                </div>
+              </div>
+              <p id="youtubeEmpty">Paste a YouTube link to generate preview links.</p>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="details" class="section-band feature-story">
+        <article class="feature-slice reveal">
+          <div>
+            <p class="eyebrow">Video mode</p>
+            <h2>Build a clean watch or embed link.</h2>
+            <p>The parser normalizes Shorts, watch URLs, embed URLs, and short links into a single video identity.</p>
+          </div>
+          <div class="detail-diagram youtube-video-diagram" aria-hidden="true">
+            <span></span><span></span><span></span><i></i>
+          </div>
+        </article>
+
+        <article class="feature-slice reverse reveal">
+          <div>
+            <p class="eyebrow">Audio intent</p>
+            <h2>Choose the audio path without pretending the browser can extract it.</h2>
+            <p>This static tool prepares the link and mode cleanly; actual media extraction requires a compliant service and appropriate rights.</p>
+          </div>
+          <div class="detail-diagram youtube-audio-diagram" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Personal Toolbox</span>
+      <a href="../index.html#tools">Back to all tools</a>
+    </footer>
+
+    <div id="youtubeToast" class="tool-toast" role="status" aria-live="polite">Copied</div>
+
+    <script src="../assets/js/tool-data.js" defer></script>
+    <script src="../assets/js/main.js" defer></script>
+    <script src="../assets/js/youtube-link.js" defer></script>
+  </body>
+</html>

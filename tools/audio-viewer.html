@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Inspect audio as a waveform, piano spectrogram, and volume map with playback controls.">
+    <title>Audio Viewer | Personal Toolbox</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+  </head>
+  <body class="tool-page tool-audio-viewer">
+    <header class="site-nav">
+      <a class="brand-mark" href="../index.html" aria-label="Personal Toolbox home">
+        <span class="brand-glyph" aria-hidden="true"></span>
+        <span>Toolbox</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="../index.html#tools">Tools</a>
+        <a href="#viewer">Viewer</a>
+        <a href="#details">Details</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="tool-hero section-band">
+        <div class="hero-copy reveal">
+          <div class="tool-title-row">
+            <span class="tool-hero-icon" data-icon="audioView" aria-hidden="true"></span>
+            <p class="eyebrow">Audio Viewer</p>
+          </div>
+          <h1>Scroll through sound like an instrument.</h1>
+          <p class="hero-text">Load an audio file and inspect waveform shape, note energy on a piano roll, volume movement, and playback changes in one focused view.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#viewer">Open viewer</a>
+            <a class="button secondary" href="../index.html#tools">All tools</a>
+          </div>
+        </div>
+
+        <div class="tool-hero-visual reveal" aria-label="Audio viewer interface illustration">
+          <div class="audio-hero-object">
+            <div class="audio-object-top">
+              <span></span>
+              <strong>Wave + piano roll</strong>
+              <small>live playhead</small>
+            </div>
+            <div class="audio-hero-wave" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="audio-hero-roll" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+              <b></b><b></b><b></b><b></b><b></b>
+            </div>
+            <div class="audio-hero-volume"><i></i></div>
+            <div class="audio-note-pill">
+              <span></span>
+              C4 / E4 / A4
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="viewer" class="section-band audio-viewer-band">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Viewer</p>
+          <h2>Waveform, note map, volume lane.</h2>
+          <p>Drag in audio, scroll the track, click anywhere to seek, then adjust speed and pitch for quick listening experiments.</p>
+        </div>
+
+        <div class="audio-workspace reveal">
+          <aside class="audio-control-object">
+            <label class="drop-zone audio-drop" for="audioInput" id="audioDrop">
+              <input id="audioInput" type="file" accept="audio/*">
+              <span class="drop-icon" aria-hidden="true"></span>
+              <strong>Drop an audio file or choose one</strong>
+              <small>MP3, WAV, M4A, OGG, and browser-supported formats</small>
+            </label>
+
+            <div class="audio-stats" aria-label="Audio stats">
+              <span>Duration <strong id="audioDuration">0:00</strong></span>
+              <span>Sample rate <strong id="audioSampleRate">0 Hz</strong></span>
+              <span>Peak <strong id="audioPeak">-inf dB</strong></span>
+              <span>Loudness <strong id="audioLoudness">-inf dB</strong></span>
+            </div>
+
+            <div class="action-row">
+              <button id="audioPlay" class="button primary" type="button" disabled>Play</button>
+              <button id="audioStop" class="button secondary" type="button" disabled>Stop</button>
+              <button id="audioDemo" class="button secondary" type="button">Load demo</button>
+            </div>
+
+            <div class="control-grid audio-controls">
+              <label class="range-field">
+                <span>Zoom <strong id="audioZoomValue">120 px/s</strong></span>
+                <input id="audioZoom" type="range" min="36" max="360" step="6" value="120">
+              </label>
+              <label class="range-field">
+                <span>Speed <strong id="audioSpeedValue">1.00x</strong></span>
+                <input id="audioSpeed" type="range" min="0.5" max="2" step="0.01" value="1">
+              </label>
+              <label class="range-field">
+                <span>Pitch bend <strong id="audioPitchValue">0 st</strong></span>
+                <input id="audioPitch" type="range" min="-12" max="12" step="1" value="0">
+              </label>
+              <label class="range-field">
+                <span>Monitor volume <strong id="audioGainValue">85%</strong></span>
+                <input id="audioGain" type="range" min="0" max="100" step="1" value="85">
+              </label>
+              <label class="field">
+                <span>Analysis detail</span>
+                <select id="audioDetail">
+                  <option value="fast">Fast</option>
+                  <option value="balanced" selected>Balanced</option>
+                  <option value="detail">Detailed</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Note range</span>
+                <select id="audioRange">
+                  <option value="bass">Bass C1-C5</option>
+                  <option value="vocal" selected>Vocal C2-C6</option>
+                  <option value="wide">Wide C1-C7</option>
+                </select>
+              </label>
+              <label class="field toggle-field">
+                <span>Follow playhead</span>
+                <input id="audioFollow" type="checkbox" checked>
+              </label>
+              <label class="field toggle-field">
+                <span>Loop range</span>
+                <input id="audioLoop" type="checkbox">
+              </label>
+              <label class="field">
+                <span>Loop start</span>
+                <input id="audioLoopStart" type="number" min="0" step="0.1" value="0">
+              </label>
+              <label class="field">
+                <span>Loop end</span>
+                <input id="audioLoopEnd" type="number" min="0" step="0.1" value="0">
+              </label>
+            </div>
+
+            <div class="action-row">
+              <button id="audioReanalyze" class="button secondary" type="button" disabled>Reanalyze</button>
+              <button id="audioSnapshot" class="button secondary" type="button" disabled>Export snapshot</button>
+              <button id="audioCopyStats" class="button secondary" type="button" disabled>Copy stats</button>
+            </div>
+          </aside>
+
+          <section class="audio-view-object">
+            <div class="preview-header">
+              <span id="audioFileName">No audio loaded</span>
+              <small id="audioTimeReadout">0:00 / 0:00</small>
+            </div>
+
+            <div class="audio-transport">
+              <input id="audioSeek" type="range" min="0" max="0" step="0.01" value="0" disabled aria-label="Seek audio">
+              <div class="audio-transport-meta">
+                <span id="audioStatus">Waiting for audio</span>
+                <span id="audioTopNotes">Top notes: none</span>
+              </div>
+            </div>
+
+            <div class="audio-track-frame">
+              <div id="audioPianoLabels" class="audio-piano-labels" aria-hidden="true"></div>
+              <div id="audioScroll" class="audio-scroll">
+                <div id="audioCanvasStack" class="audio-canvas-stack">
+                  <canvas id="audioTimeline" aria-label="Audio timeline"></canvas>
+                  <canvas id="audioWaveform" aria-label="Scrollable audio waveform"></canvas>
+                  <canvas id="audioPianoRoll" aria-label="Piano note spectrogram"></canvas>
+                  <canvas id="audioVolumeCanvas" aria-label="Audio volume lane"></canvas>
+                  <div id="audioPlayhead" class="audio-playhead" aria-hidden="true"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="audio-note-strip">
+              <span>Click canvases to seek</span>
+              <span>Scroll horizontally to inspect the track</span>
+              <span>Pitch view is note-energy based, not a transcription engine</span>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="details" class="section-band feature-story">
+        <article class="feature-slice reveal">
+          <div>
+            <p class="eyebrow">Piano spectrogram</p>
+            <h2>Notes glow where frequencies gather.</h2>
+            <p>The piano roll uses note-centered energy analysis to reveal melodic bands, chord regions, and bright harmonic movement.</p>
+          </div>
+          <div class="detail-diagram audio-roll-diagram" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><i></i><b></b>
+          </div>
+        </article>
+
+        <article class="feature-slice reverse reveal">
+          <div>
+            <p class="eyebrow">Playback lab</p>
+            <h2>Slow down, speed up, bend pitch.</h2>
+            <p>Use the transport controls to audition timing, pitch movement, loop ranges, and exported visual snapshots without leaving the page.</p>
+          </div>
+          <div class="detail-diagram audio-wave-diagram" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Personal Toolbox</span>
+      <a href="../index.html#tools">Back to all tools</a>
+    </footer>
+
+    <audio id="audioElement" preload="metadata"></audio>
+    <div id="audioToast" class="tool-toast" role="status" aria-live="polite">Audio ready</div>
+
+    <script src="../assets/js/tool-data.js" defer></script>
+    <script src="../assets/js/main.js" defer></script>
+    <script src="../assets/js/audio-viewer.js" defer></script>
+  </body>
+</html>

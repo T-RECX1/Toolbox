@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Analyze lyrics by line and highlight matching syllable sounds.">
+    <title>Lyrics Analyzer | Personal Toolbox</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+  </head>
+  <body class="tool-page tool-lyrics">
+    <header class="site-nav">
+      <a class="brand-mark" href="../index.html" aria-label="Personal Toolbox home">
+        <span class="brand-glyph" aria-hidden="true"></span>
+        <span>Toolbox</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="../index.html#tools">Tools</a>
+        <a href="#analyzer">Analyzer</a>
+        <a href="#details">Details</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="tool-hero section-band">
+        <div class="hero-copy reveal">
+          <div class="tool-title-row">
+            <span class="tool-hero-icon" data-icon="lyrics" aria-hidden="true"></span>
+            <p class="eyebrow">Lyrics Analyzer</p>
+          </div>
+          <h1>See the sound pattern inside a verse.</h1>
+          <p class="hero-text">Paste lyrics, keep every line intact, and highlight matching syllable sounds with a consistent color map.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#analyzer">Analyze lyrics</a>
+            <a class="button secondary" href="../index.html#tools">All tools</a>
+          </div>
+        </div>
+
+        <div class="tool-hero-visual reveal" aria-label="Lyrics analyzer interface illustration">
+          <div class="lyrics-hero-object">
+            <div class="lyrics-object-top">
+              <span></span>
+              <strong>Sound map</strong>
+              <small>line split</small>
+            </div>
+            <div class="lyrics-hero-lines" aria-hidden="true">
+              <p><span></span><i></i><b></b><em></em></p>
+              <p><b></b><em></em><span></span><i></i></p>
+              <p><i></i><span></span><em></em><b></b></p>
+              <p><span></span><b></b><i></i><em></em></p>
+              <p><em></em><i></i><span></span><b></b></p>
+            </div>
+            <div class="lyrics-wave-rail">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="lyrics-match-pill">
+              <span></span>
+              18 linked sounds
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="analyzer" class="section-band lyrics-analyzer-band">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Analyzer</p>
+          <h2>Line by line. Syllable by syllable.</h2>
+          <p>The engine estimates syllable groups, reduces each group to a sound key, then colors repeated keys across the whole lyric.</p>
+        </div>
+
+        <div class="lyrics-workspace reveal">
+          <aside class="lyrics-control-object">
+            <label class="field lyrics-input-field">
+              <span>Lyrics</span>
+              <textarea id="lyricsInput" spellcheck="false">I write in the night with a bright little line
+Every rhyme finds time in the light
+Soft words curve when the verse returns
+I chase the bass till the phrase burns
+Hold the tone, let it roll through the room
+More than a poem when the vowels bloom</textarea>
+            </label>
+
+            <div class="lyrics-stats" aria-label="Lyrics stats">
+              <span>Lines <strong id="lyricsLineCount">0</strong></span>
+              <span>Words <strong id="lyricsWordCount">0</strong></span>
+              <span>Sound groups <strong id="lyricsGroupCount">0</strong></span>
+            </div>
+
+            <div class="control-grid lyrics-controls">
+              <label class="field">
+                <span>Analysis mode</span>
+                <select id="lyricsMode">
+                  <option value="all" selected>All syllable sounds</option>
+                  <option value="ending">Line-end rhymes</option>
+                  <option value="vowel">Vowel families</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Sensitivity</span>
+                <select id="lyricsSensitivity">
+                  <option value="loose">Loose</option>
+                  <option value="balanced" selected>Balanced</option>
+                  <option value="strict">Strict</option>
+                </select>
+              </label>
+              <label class="range-field">
+                <span>Minimum repeats <strong id="lyricsMinValue">2</strong></span>
+                <input id="lyricsMinRepeats" type="range" min="1" max="5" step="1" value="2">
+              </label>
+              <label class="field toggle-field">
+                <span>Dim unmatched words</span>
+                <input id="lyricsDimUnmatched" type="checkbox" checked>
+              </label>
+            </div>
+
+            <div class="action-row">
+              <button id="lyricsAnalyze" class="button primary" type="button">Analyze</button>
+              <button id="lyricsSample" class="button secondary" type="button">Load sample</button>
+              <button id="lyricsCopy" class="button secondary" type="button">Copy map</button>
+            </div>
+          </aside>
+
+          <section class="lyrics-preview-object">
+            <div class="preview-header">
+              <span>Highlighted lyric map</span>
+              <small id="lyricsSummary">Waiting for lyrics</small>
+            </div>
+            <div id="lyricsOutput" class="lyrics-output" aria-live="polite"></div>
+            <div class="lyrics-legend-wrap">
+              <div class="preview-header">
+                <span>Sound families</span>
+                <small>Hover a color to isolate matches</small>
+              </div>
+              <div id="lyricsLegend" class="lyrics-legend"></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="details" class="section-band feature-story">
+        <article class="feature-slice reveal">
+          <div>
+            <p class="eyebrow">Sound matching</p>
+            <h2>Colors belong to sounds, not positions.</h2>
+            <p>Repeated vowel and ending patterns share the same color wherever they appear, so internal rhyme and line-end rhyme become visible at once.</p>
+          </div>
+          <div class="detail-diagram lyrics-sound-diagram" aria-hidden="true">
+            <span></span><i></i><b></b><em></em><strong></strong>
+          </div>
+        </article>
+
+        <article class="feature-slice reverse reveal">
+          <div>
+            <p class="eyebrow">Readable structure</p>
+            <h2>The original line breaks stay intact.</h2>
+            <p>Each line remains a separate row, while every highlighted syllable keeps a tooltip with the normalized sound key used for matching.</p>
+          </div>
+          <div class="detail-diagram lyrics-line-diagram" aria-hidden="true">
+            <p><span></span><i></i><b></b><em></em></p>
+            <p><i></i><span></span><em></em><b></b></p>
+            <p><b></b><em></em><span></span><i></i></p>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Personal Toolbox</span>
+      <a href="../index.html#tools">Back to all tools</a>
+    </footer>
+
+    <div id="lyricsToast" class="tool-toast" role="status" aria-live="polite">Copied</div>
+
+    <script src="../assets/js/tool-data.js" defer></script>
+    <script src="../assets/js/main.js" defer></script>
+    <script src="../assets/js/lyrics-analyzer.js" defer></script>
+  </body>
+</html>

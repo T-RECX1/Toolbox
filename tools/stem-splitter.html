@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Split audio into local spectral stem lanes and rebalance or mute instruments in the browser.">
+    <title>Stem Splitter | Personal Toolbox</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+  </head>
+  <body class="tool-page tool-stem-splitter">
+    <header class="site-nav">
+      <a class="brand-mark" href="../index.html" aria-label="Personal Toolbox home">
+        <span class="brand-glyph" aria-hidden="true"></span>
+        <span>Toolbox</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="../index.html#tools">Tools</a>
+        <a href="#splitter">Splitter</a>
+        <a href="#details">Details</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="tool-hero section-band">
+        <div class="hero-copy reveal">
+          <div class="tool-title-row">
+            <span class="tool-hero-icon" data-icon="stemSplitter" aria-hidden="true"></span>
+            <p class="eyebrow">Stem Splitter</p>
+          </div>
+          <h1>Separate the track into playable parts.</h1>
+          <p class="hero-text">Load audio, inspect vocals, bass, kick, snare, hats, and instrument lanes, then rebalance or mute parts while keeping the full mix local.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#splitter">Open splitter</a>
+            <a class="button secondary" href="../index.html#tools">All tools</a>
+          </div>
+        </div>
+
+        <div class="tool-hero-visual reveal" aria-label="Stem splitter interface illustration">
+          <div class="stem-hero-object">
+            <div class="stem-object-top">
+              <span></span>
+              <strong>Stem matrix</strong>
+              <small>mix ready</small>
+            </div>
+            <div class="stem-hero-wave" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="stem-hero-lanes" aria-hidden="true">
+              <p><span>Vocals</span><i></i><b></b></p>
+              <p><span>Bass</span><i></i><b></b></p>
+              <p><span>Kick</span><i></i><b></b></p>
+              <p><span>Snare</span><i></i><b></b></p>
+              <p><span>Piano</span><i></i><b></b></p>
+            </div>
+            <div class="stem-mix-pill">
+              <span></span>
+              12 live lanes
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="splitter" class="section-band stem-splitter-band">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Splitter</p>
+          <h2>Local stem lanes with live mix controls.</h2>
+          <p>This browser tool uses spectral profiles and time-varying masks. It is not a neural studio separator, but lane changes now follow detected instrument activity instead of static EQ alone.</p>
+        </div>
+
+        <div class="stem-workspace reveal">
+          <aside class="stem-control-object">
+            <label class="drop-zone stem-drop" for="stemInput" id="stemDrop">
+              <input id="stemInput" type="file" accept="audio/*">
+              <span class="drop-icon" aria-hidden="true"></span>
+              <strong>Drop an audio track or choose one</strong>
+              <small>MP3, WAV, M4A, OGG, and browser-supported formats</small>
+            </label>
+
+            <div class="stem-stats" aria-label="Stem analysis stats">
+              <span>Duration <strong id="stemDuration">0:00</strong></span>
+              <span>Rate <strong id="stemSampleRate">0 Hz</strong></span>
+              <span>Lanes <strong id="stemLaneCount">12</strong></span>
+              <span>Mode <strong id="stemModeLabel">Balanced</strong></span>
+            </div>
+
+            <div class="stem-targets" aria-label="Stem targets">
+              <p>Stem lanes / mute and volume</p>
+              <div id="stemTargetList" class="stem-target-list"></div>
+            </div>
+
+            <div class="control-grid stem-controls">
+              <label class="field">
+                <span>Analysis mode</span>
+                <select id="stemMode">
+                  <option value="fast">Fast</option>
+                  <option value="balanced" selected>Balanced</option>
+                  <option value="detail">Detailed</option>
+                </select>
+              </label>
+              <label class="range-field">
+                <span>Sensitivity <strong id="stemSensitivityValue">58%</strong></span>
+                <input id="stemSensitivity" type="range" min="0.25" max="0.9" step="0.01" value="0.58">
+              </label>
+              <label class="range-field">
+                <span>Master volume <strong id="stemGainValue">86%</strong></span>
+                <input id="stemGain" type="range" min="0" max="100" step="1" value="86">
+              </label>
+            </div>
+
+            <div class="action-row">
+              <button id="stemAnalyze" class="button primary" type="button" disabled>Analyze</button>
+              <button id="stemPlay" class="button secondary" type="button" disabled>Play mix</button>
+              <button id="stemStop" class="button secondary" type="button" disabled>Stop</button>
+            </div>
+
+            <div class="action-row">
+              <button id="stemExportWav" class="button primary" type="button" disabled>Export mix WAV</button>
+              <button id="stemCopyReport" class="button secondary" type="button" disabled>Copy report</button>
+            </div>
+
+            <div class="progress-wrap stem-progress">
+              <div class="progress-label">
+                <span id="stemStatus">Waiting for audio</span>
+                <span id="stemProgressValue">0%</span>
+              </div>
+              <div class="progress-track">
+                <span id="stemProgressBar"></span>
+              </div>
+            </div>
+          </aside>
+
+          <section class="stem-view-object">
+            <div class="preview-header">
+              <span id="stemFileName">No track loaded</span>
+              <small id="stemMeta">Upload audio to begin</small>
+            </div>
+
+            <div class="stem-canvas-stage">
+              <canvas id="stemWaveCanvas" aria-label="Track waveform"></canvas>
+              <canvas id="stemLaneCanvas" aria-label="Detected stem energy lanes"></canvas>
+              <div id="stemPlayhead" class="stem-playhead" aria-hidden="true"></div>
+              <p id="stemEmpty">The stem matrix appears here after analysis.</p>
+            </div>
+
+            <div class="stem-lane-strip">
+              <span>Vocals</span>
+              <span>Bass</span>
+              <span>Kick</span>
+              <span>Snare</span>
+              <span>Hi-hat</span>
+              <span>Piano</span>
+              <span>Guitar</span>
+              <span>Strings</span>
+            </div>
+
+            <div class="stem-note-strip">
+              <span id="stemMixSummary">Mix: original track</span>
+              <span id="stemSelectedInfo">Selected stem: vocals</span>
+              <span>Local spectral preview</span>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="details" class="section-band feature-story">
+        <article class="feature-slice reveal">
+          <div>
+            <p class="eyebrow">Stem targets</p>
+            <h2>Drums, voice, bass, and instruments get their own lanes.</h2>
+            <p>Kick, snare, hi-hat, toms, cymbals, bass, vocals, piano, guitar, strings, synth, and brass each use tuned spectral ranges and transient behavior.</p>
+          </div>
+          <div class="detail-diagram stem-lane-diagram" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </article>
+
+        <article class="feature-slice reverse reveal">
+          <div>
+            <p class="eyebrow">Mix control</p>
+            <h2>Mute or rebalance lanes and export the current mix.</h2>
+            <p>All lanes start at 100%, so playback begins as the original track. Change a lane to switch into a masked spectral mix with per-instrument volume control.</p>
+          </div>
+          <div class="detail-diagram stem-mix-diagram" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><b></b>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Personal Toolbox</span>
+      <a href="../index.html#tools">Back to all tools</a>
+    </footer>
+
+    <div id="stemToast" class="tool-toast" role="status" aria-live="polite">Stem ready</div>
+
+    <script src="../assets/js/tool-data.js" defer></script>
+    <script src="../assets/js/main.js" defer></script>
+    <script src="../assets/js/stem-splitter.js" defer></script>
+  </body>
+</html>

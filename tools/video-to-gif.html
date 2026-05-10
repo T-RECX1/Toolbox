@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Turn short video clips into shareable GIFs in the browser.">
+    <title>Video-to-GIF | Personal Toolbox</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+  </head>
+  <body class="tool-page tool-video-gif">
+    <header class="site-nav">
+      <a class="brand-mark" href="../index.html" aria-label="Personal Toolbox home">
+        <span class="brand-glyph" aria-hidden="true"></span>
+        <span>Toolbox</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="../index.html#tools">Tools</a>
+        <a href="#converter">Converter</a>
+        <a href="#details">Details</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="tool-hero section-band">
+        <div class="hero-copy reveal">
+          <div class="tool-title-row">
+            <span class="tool-hero-icon" data-icon="videoGif" aria-hidden="true"></span>
+            <p class="eyebrow">Video-to-GIF</p>
+          </div>
+          <h1>Trim the moment. Keep the motion.</h1>
+          <p class="hero-text">A focused clip instrument for turning short video segments into clean, shareable GIF loops.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#converter">Start converting</a>
+            <a class="button secondary" href="../index.html#tools">All tools</a>
+          </div>
+        </div>
+
+        <div class="tool-hero-visual reveal" aria-label="Video-to-GIF interface illustration">
+          <div class="clip-card">
+            <div class="clip-toolbar">
+              <span class="window-dot"></span>
+              <strong>Clip composer</strong>
+              <small>GIF</small>
+            </div>
+            <div class="clip-stage">
+              <div class="clip-frame-grid">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <div class="play-prism large"></div>
+              <div class="loop-indicator">
+                <span></span>
+                Looping
+              </div>
+            </div>
+            <div class="clip-strip">
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="trim-rail">
+              <i class="trim-handle start"></i>
+              <span></span>
+              <i class="trim-handle end"></i>
+            </div>
+            <div class="export-pill">
+              <span></span>
+              Export ready
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="converter" class="section-band converter-band">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Workspace</p>
+          <h2>Preview first. Tune with intent.</h2>
+          <p>Load a video, set the range, then use size and frame rate as visible quality controls. The conversion runs in your browser.</p>
+        </div>
+
+        <div class="converter-shell reveal">
+          <div class="upload-panel">
+            <label class="drop-zone" for="videoInput" id="dropZone">
+              <input id="videoInput" type="file" accept="video/*">
+              <span class="drop-icon" aria-hidden="true"></span>
+              <strong>Drop a video here or choose a file</strong>
+              <small>MP4, WebM, MOV, and other browser-supported formats</small>
+            </label>
+
+            <div class="control-grid" id="controls" aria-live="polite">
+              <label class="field">
+                <span>Start time</span>
+                <input id="startTime" type="number" min="0" step="0.1" value="0" disabled>
+              </label>
+              <label class="field">
+                <span>End time</span>
+                <input id="endTime" type="number" min="0" step="0.1" value="0" disabled>
+              </label>
+              <label class="field">
+                <span>Resolution</span>
+                <select id="resolution" disabled>
+                  <option value="320">320 px wide</option>
+                  <option value="480" selected>480 px wide</option>
+                  <option value="640">640 px wide</option>
+                  <option value="source">Source width</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Frame rate</span>
+                <select id="frameRate" disabled>
+                  <option value="8">8 fps</option>
+                  <option value="12" selected>12 fps</option>
+                  <option value="15">15 fps</option>
+                  <option value="24">24 fps</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="timeline-control" id="timelineControl">
+              <div class="time-readout">
+                <span id="durationLabel">No video loaded</span>
+                <span id="selectionLabel">Select a clip to preview</span>
+              </div>
+              <div class="range-pair">
+                <input id="startRange" type="range" min="0" max="0" step="0.1" value="0" disabled aria-label="Start time slider">
+                <input id="endRange" type="range" min="0" max="0" step="0.1" value="0" disabled aria-label="End time slider">
+              </div>
+            </div>
+
+            <div class="action-row">
+              <button id="convertButton" class="button primary" disabled>Convert to GIF</button>
+              <a id="downloadButton" class="button secondary disabled" href="#" download="toolbox-video.gif" aria-disabled="true">Download GIF</a>
+            </div>
+
+            <div class="progress-wrap" aria-label="Conversion progress">
+              <div class="progress-label">
+                <span id="progressText">Waiting for a video</span>
+                <span id="progressPercent">0%</span>
+              </div>
+              <div class="progress-track">
+                <span id="progressBar"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="preview-panel">
+            <div class="preview-header">
+              <span>Live preview</span>
+              <small id="outputMeta">Upload a video to begin</small>
+            </div>
+            <div class="preview-stage" id="previewStage">
+              <video id="sourcePreview" muted playsinline></video>
+              <img id="gifPreview" alt="Generated GIF preview">
+              <div class="empty-state" id="emptyState">
+                <span class="empty-mark"></span>
+                <p>Your selected clip appears here.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-band process-band">
+        <div class="process-strip reveal" aria-label="Video-to-GIF workflow">
+          <article>
+            <span class="process-icon trim"></span>
+            <strong>Trim</strong>
+            <p>Choose the moment that carries the motion.</p>
+          </article>
+          <article>
+            <span class="process-icon tune"></span>
+            <strong>Tune</strong>
+            <p>Balance size, width, and frame rate.</p>
+          </article>
+          <article>
+            <span class="process-icon export"></span>
+            <strong>Export</strong>
+            <p>Download a loop that is easy to share.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="details" class="section-band feature-story">
+        <article class="feature-slice reveal">
+          <div>
+            <p class="eyebrow">Clip precision</p>
+            <h2>Frame markers make the range feel tangible.</h2>
+            <p>The page keeps timing controls and preview feedback close together, so the selected moment stays easy to understand.</p>
+          </div>
+          <div class="detail-diagram trim-diagram" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </article>
+
+        <article class="feature-slice reverse reveal">
+          <div>
+            <p class="eyebrow">Output balance</p>
+            <h2>Smoothness and size stay visible.</h2>
+            <p>Resolution and frame rate are presented as deliberate quality controls, not buried settings.</p>
+          </div>
+          <div class="detail-diagram quality-diagram" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Personal Toolbox</span>
+      <a href="../index.html#tools">Back to all tools</a>
+    </footer>
+
+    <script src="../assets/js/tool-data.js" defer></script>
+    <script src="../assets/js/main.js" defer></script>
+    <script src="../assets/js/video-to-gif.js" defer></script>
+  </body>
+</html>

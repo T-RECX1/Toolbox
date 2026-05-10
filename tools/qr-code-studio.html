@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Design scan-safe custom QR codes with logos, frames, colors, presets, and high-quality exports.">
+    <title>QR Code Studio | Personal Toolbox</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+  </head>
+  <body class="tool-page tool-qr">
+    <header class="site-nav">
+      <a class="brand-mark" href="../index.html" aria-label="Personal Toolbox home">
+        <span class="brand-glyph" aria-hidden="true"></span>
+        <span>Toolbox</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="../index.html#tools">Tools</a>
+        <a href="#studio">Studio</a>
+        <a href="#details">Details</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="tool-hero section-band">
+        <div class="hero-copy reveal">
+          <div class="tool-title-row">
+            <span class="tool-hero-icon" data-icon="qr" aria-hidden="true"></span>
+            <p class="eyebrow">QR Code Studio</p>
+          </div>
+          <h1>Design a QR that still scans.</h1>
+          <p class="hero-text">Create scan-safe QR codes with custom content, module shapes, finder eyes, logos, frames, colors, validation, and export presets.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#studio">Open studio</a>
+            <a class="button secondary" href="../index.html#tools">All tools</a>
+          </div>
+        </div>
+
+        <div class="tool-hero-visual reveal" aria-label="QR Code Studio interface illustration">
+          <div class="qr-hero-object">
+            <div class="qr-object-top">
+              <span></span>
+              <strong>Scan-safe designer</strong>
+              <small>score 94</small>
+            </div>
+            <div class="qr-hero-grid" aria-hidden="true">
+              <span></span><span></span><span></span>
+              <span></span><span></span><span></span>
+              <span></span><span></span><span></span>
+            </div>
+            <div class="qr-hero-scan"><i></i></div>
+            <div class="qr-score-pill">
+              <span></span>
+              Excellent scan safety
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="studio" class="section-band qr-studio-band">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Studio</p>
+          <h2>Content, design, safety, export.</h2>
+          <p>Every control updates live. Safe mode keeps the design inside readable bounds while still leaving room for customization.</p>
+        </div>
+
+        <div class="qr-studio-workspace reveal">
+          <section class="qr-preview-object">
+            <div class="preview-header">
+              <span id="qrPreviewTitle">Live QR preview</span>
+              <small id="qrVersionInfo">Version 1 | 21 x 21</small>
+            </div>
+            <div class="qr-preview-stage" id="qrPreviewStage">
+              <canvas id="qrCanvas" aria-label="Generated QR code preview"></canvas>
+            </div>
+            <div class="qr-preview-modes" role="group" aria-label="Preview modes">
+              <button type="button" class="active" data-preview="raw">Raw</button>
+              <button type="button" data-preview="framed">Framed</button>
+              <button type="button" data-preview="light">Light</button>
+              <button type="button" data-preview="phone">Phone</button>
+              <button type="button" data-preview="small">Small</button>
+            </div>
+          </section>
+
+          <aside class="qr-control-object">
+            <div class="qr-control-tabs" role="tablist" aria-label="QR Studio controls">
+              <button type="button" class="active" data-panel="content">Content</button>
+              <button type="button" data-panel="style">Style</button>
+              <button type="button" data-panel="eyes">Eyes</button>
+              <button type="button" data-panel="logo">Logo</button>
+              <button type="button" data-panel="frame">Frame</button>
+              <button type="button" data-panel="safety">Safety</button>
+              <button type="button" data-panel="export">Export</button>
+            </div>
+
+            <div class="qr-panel-stack">
+              <section class="qr-panel active" data-panel-view="content">
+                <div class="qr-type-tabs" role="tablist" aria-label="QR content type">
+                  <button type="button" class="active" data-qr-type="url">URL</button>
+                  <button type="button" data-qr-type="text">Text</button>
+                  <button type="button" data-qr-type="email">Email</button>
+                  <button type="button" data-qr-type="phone">Phone</button>
+                  <button type="button" data-qr-type="sms">SMS</button>
+                  <button type="button" data-qr-type="wifi">Wi-Fi</button>
+                  <button type="button" data-qr-type="vcard">vCard</button>
+                  <button type="button" data-qr-type="location">Location</button>
+                  <button type="button" data-qr-type="event">Event</button>
+                  <button type="button" data-qr-type="app">App</button>
+                  <button type="button" data-qr-type="clipboard">Clipboard</button>
+                  <button type="button" data-qr-type="raw">Raw</button>
+                </div>
+
+                <div class="qr-content-panels">
+                  <div class="qr-content-panel active" data-qr-type-view="url">
+                    <label class="field"><span>Website URL</span><input id="qrUrl" value="https://example.com" type="url"></label>
+                  </div>
+                  <div class="qr-content-panel" data-qr-type-view="text">
+                    <label class="field"><span>Text</span><textarea id="qrText">A premium QR made in Toolbox.</textarea></label>
+                  </div>
+                  <div class="qr-content-panel" data-qr-type-view="email">
+                    <label class="field"><span>Email</span><input id="qrEmail" value="hello@example.com" type="email"></label>
+                    <label class="field"><span>Subject</span><input id="qrEmailSubject" value="Hello"></label>
+                    <label class="field"><span>Body</span><textarea id="qrEmailBody">Sent from QR Code Studio.</textarea></label>
+                  </div>
+                  <div class="qr-content-panel" data-qr-type-view="phone">
+                    <label class="field"><span>Phone number</span><input id="qrPhone" value="+15551234567"></label>
+                  </div>
+                  <div class="qr-content-panel" data-qr-type-view="sms">
+                    <label class="field"><span>Phone number</span><input id="qrSmsPhone" value="+15551234567"></label>
+                    <label class="field"><span>Message</span><textarea id="qrSmsBody">Hello from QR Code Studio.</textarea></label>
+                  </div>
+                  <div class="qr-content-panel" data-qr-type-view="wifi">
+                    <label class="field"><span>SSID</span><input id="qrWifiSsid" value="Studio WiFi"></label>
+                    <label class="field"><span>Password</span><input id="qrWifiPassword" value="password123"></label>
+                    <label class="field"><span>Security</span><select id="qrWifiSecurity"><option>WPA</option><option>WEP</option><option>nopass</option></select></label>
+                    <label class="field toggle-field"><span>Hidden network</span><input id="qrWifiHidden" type="checkbox"></label>
+                  </div>
+                  <div class="qr-content-panel" data-qr-type-view="vcard">
+                    <label class="field"><span>Name</span><input id="qrVName" value="Alex Morgan"></label>
+                    <label class="field"><span>Company</span><input id="qrVCompany" value="Toolbox Studio"></label>
+                    <label class="field"><span>Title</span><input id="qrVTitle" value="Creative Lead"></label>
+                    <label class="field"><span>Phone</span><input id="qrVPhone" value="+15551234567"></label>
+                    <label class="field"><span>Email</span><input id="qrVEmail" value="alex@example.com"></label>
+                    <label class="field"><span>Website</span><input id="qrVWebsite" value="https://example.com"></label>
+                    <label class="field"><span>Address</span><textarea id="qrVAddress">123 Market Street, Chicago, IL</textarea></label>
+                  </div>
+                  <div class="qr-content-panel" data-qr-type-view="location">
+                    <label class="field"><span>Latitude</span><input id="qrLat" value="41.8781"></label>
+                    <label class="field"><span>Longitude</span><input id="qrLng" value="-87.6298"></label>
+                    <label class="field toggle-field"><span>Use map link</span><input id="qrMapLink" type="checkbox" checked></label>
+                  </div>
+                  <div class="qr-content-panel" data-qr-type-view="event">
+                    <label class="field"><span>Title</span><input id="qrEventTitle" value="Studio Launch"></label>
+                    <label class="field"><span>Location</span><input id="qrEventLocation" value="Chicago"></label>
+                    <label class="field"><span>Start</span><input id="qrEventStart" type="datetime-local"></label>
+                    <label class="field"><span>End</span><input id="qrEventEnd" type="datetime-local"></label>
+                    <label class="field"><span>Notes</span><textarea id="qrEventNotes">Bring the QR code.</textarea></label>
+                  </div>
+                  <div class="qr-content-panel" data-qr-type-view="app">
+                    <label class="field"><span>App or custom link</span><input id="qrAppLink" value="myapp://open/studio"></label>
+                  </div>
+                  <div class="qr-content-panel" data-qr-type-view="clipboard">
+                    <label class="field"><span>Pasted content</span><textarea id="qrClipboard">Paste anything here.</textarea></label>
+                  </div>
+                  <div class="qr-content-panel" data-qr-type-view="raw">
+                    <label class="field"><span>Raw QR payload</span><textarea id="qrRaw">RAW:TOOLBOX-STUDIO</textarea></label>
+                  </div>
+                </div>
+              </section>
+
+              <section class="qr-panel" data-panel-view="style">
+                <div class="qr-preset-row">
+                  <button type="button" data-preset="premium">Premium black</button>
+                  <button type="button" data-preset="safe">Scan-safe</button>
+                  <button type="button" data-preset="rounded">Rounded</button>
+                  <button type="button" data-preset="mono">Monochrome</button>
+                  <button type="button" data-preset="sticker">Sticker</button>
+                  <button type="button" data-preset="wifi">Wi-Fi sign</button>
+                </div>
+                <label class="field"><span>Module shape</span><select id="qrModuleShape"><option value="square">Square</option><option value="rounded" selected>Rounded square</option><option value="dot">Circle / dot</option><option value="squircle">Squircle</option><option value="extra">Extra rounded</option><option value="soft">Soft pixel</option><option value="pill">Pill-like</option><option value="diamond">Diamond</option></select></label>
+                <label class="range-field"><span>Corner roundness <strong id="qrRoundnessValue">46%</strong></span><input id="qrRoundness" type="range" min="0" max="1" step="0.01" value="0.46"></label>
+                <label class="range-field"><span>Module gap <strong id="qrGapValue">8%</strong></span><input id="qrGap" type="range" min="0" max="0.32" step="0.01" value="0.08"></label>
+                <label class="range-field"><span>Quiet zone <strong id="qrQuietValue">4</strong></span><input id="qrQuiet" type="range" min="1" max="8" step="1" value="4"></label>
+                <div class="qr-color-grid">
+                  <label class="field"><span>Foreground</span><input id="qrForeground" type="color" value="#050505"></label>
+                  <label class="field"><span>Background</span><input id="qrBackground" type="color" value="#ffffff"></label>
+                  <label class="field"><span>Gradient color</span><input id="qrGradientTo" type="color" value="#35e0a1"></label>
+                  <label class="field"><span>Gradient</span><select id="qrGradient"><option value="none">None</option><option value="linear">Linear</option><option value="radial">Radial</option></select></label>
+                </div>
+                <label class="range-field"><span>Gradient angle <strong id="qrAngleValue">45deg</strong></span><input id="qrGradientAngle" type="range" min="0" max="360" step="1" value="45"></label>
+                <label class="field toggle-field"><span>Transparent background</span><input id="qrTransparent" type="checkbox"></label>
+              </section>
+
+              <section class="qr-panel" data-panel-view="eyes">
+                <label class="field"><span>Outer eye shape</span><select id="qrEyeOuter"><option value="square">Square</option><option value="rounded" selected>Rounded</option><option value="circle">Circle</option><option value="soft">Soft corner</option></select></label>
+                <label class="field"><span>Inner eye shape</span><select id="qrEyeInner"><option value="square">Square</option><option value="rounded">Rounded</option><option value="circle" selected>Circle</option></select></label>
+                <div class="qr-color-grid">
+                  <label class="field"><span>Outer color</span><input id="qrEyeOuterColor" type="color" value="#050505"></label>
+                  <label class="field"><span>Center color</span><input id="qrEyeInnerColor" type="color" value="#35e0a1"></label>
+                </div>
+                <label class="field toggle-field"><span>Eye glow</span><input id="qrEyeGlow" type="checkbox"></label>
+              </section>
+
+              <section class="qr-panel" data-panel-view="logo">
+                <label class="drop-zone qr-logo-drop" for="qrLogoInput" id="qrLogoDrop">
+                  <input id="qrLogoInput" type="file" accept="image/*">
+                  <span class="drop-icon" aria-hidden="true"></span>
+                  <strong>Drop logo or image</strong>
+                  <small>Transparent PNGs work well</small>
+                </label>
+                <div class="action-row">
+                  <button id="qrRemoveLogo" class="button secondary" type="button">Remove logo</button>
+                </div>
+                <label class="range-field"><span>Logo size <strong id="qrLogoSizeValue">16%</strong></span><input id="qrLogoSize" type="range" min="0" max="0.32" step="0.01" value="0.16"></label>
+                <label class="range-field"><span>Plate padding <strong id="qrLogoPaddingValue">10%</strong></span><input id="qrLogoPadding" type="range" min="0" max="0.18" step="0.01" value="0.1"></label>
+                <label class="range-field"><span>Logo opacity <strong id="qrLogoOpacityValue">100%</strong></span><input id="qrLogoOpacity" type="range" min="0.2" max="1" step="0.01" value="1"></label>
+                <label class="field"><span>Plate shape</span><select id="qrLogoPlate"><option value="rounded" selected>Rounded square</option><option value="square">Square</option><option value="circle">Circle</option><option value="pill">Pill</option></select></label>
+                <div class="qr-color-grid">
+                  <label class="field"><span>Plate color</span><input id="qrLogoPlateColor" type="color" value="#ffffff"></label>
+                  <label class="field toggle-field"><span>Plate shadow</span><input id="qrLogoShadow" type="checkbox" checked></label>
+                </div>
+              </section>
+
+              <section class="qr-panel" data-panel-view="frame">
+                <label class="field toggle-field"><span>Frame on</span><input id="qrFrameOn" type="checkbox" checked></label>
+                <label class="field"><span>Frame style</span><select id="qrFrameStyle"><option value="minimal" selected>Minimal</option><option value="sticker">Sticker</option><option value="poster">Clean poster</option><option value="card">Business card</option></select></label>
+                <label class="field"><span>Label</span><input id="qrFrameLabel" value="Scan me"></label>
+                <label class="field"><span>Subtitle</span><input id="qrFrameSubtitle" value="Created in QR Code Studio"></label>
+                <label class="range-field"><span>Frame padding <strong id="qrFramePaddingValue">48</strong></span><input id="qrFramePadding" type="range" min="0" max="120" step="4" value="48"></label>
+                <label class="range-field"><span>Border thickness <strong id="qrBorderValue">2</strong></span><input id="qrBorder" type="range" min="0" max="16" step="1" value="2"></label>
+                <label class="range-field"><span>Corner radius <strong id="qrFrameRadiusValue">36</strong></span><input id="qrFrameRadius" type="range" min="0" max="80" step="2" value="36"></label>
+                <div class="qr-color-grid">
+                  <label class="field"><span>Frame color</span><input id="qrFrameColor" type="color" value="#050505"></label>
+                  <label class="field"><span>Text color</span><input id="qrFrameTextColor" type="color" value="#ffffff"></label>
+                </div>
+              </section>
+
+              <section class="qr-panel" data-panel-view="safety">
+                <label class="field"><span>Error correction</span><select id="qrErrorLevel"><option value="L">L - Low</option><option value="M">M - Medium</option><option value="Q">Q - Quartile</option><option value="H" selected>H - High</option></select></label>
+                <label class="field toggle-field"><span>Safe mode</span><input id="qrSafeMode" type="checkbox" checked></label>
+                <div class="qr-safety-meter">
+                  <span id="qrSafetyLabel">Excellent</span>
+                  <strong id="qrSafetyScore">94</strong>
+                  <i><b id="qrSafetyBar"></b></i>
+                </div>
+                <div id="qrWarnings" class="qr-warning-list" aria-live="polite"></div>
+                <div class="action-row">
+                  <button id="qrOptimize" type="button" class="button primary">Optimize for scan</button>
+                  <button id="qrRandomize" type="button" class="button secondary">Random safe style</button>
+                </div>
+              </section>
+
+              <section class="qr-panel" data-panel-view="export">
+                <label class="field"><span>File name</span><input id="qrFileName" value="toolbox-qr"></label>
+                <label class="field"><span>Export size</span><select id="qrExportSize"><option value="512">Small 512px</option><option value="1024" selected>Medium 1024px</option><option value="2048">Large 2048px</option><option value="4096">Ultra 4096px</option></select></label>
+                <label class="field"><span>Export target</span><select id="qrExportTarget"><option value="framed" selected>Framed if enabled</option><option value="raw">Raw QR only</option><option value="transparent">Transparent PNG</option></select></label>
+                <div class="action-row">
+                  <button id="qrExportPng" type="button" class="button primary">Download PNG</button>
+                  <button id="qrExportSvg" type="button" class="button secondary">Download SVG</button>
+                  <button id="qrCopyImage" type="button" class="button secondary">Copy Image</button>
+                </div>
+                <div class="qr-payload-info">
+                  <span>Payload <strong id="qrPayloadSize">0 chars</strong></span>
+                  <span>Complexity <strong id="qrComplexity">Low</strong></span>
+                </div>
+              </section>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="details" class="section-band feature-story">
+        <article class="feature-slice reveal">
+          <div>
+            <p class="eyebrow">Scan safety</p>
+            <h2>Creative styling with guardrails.</h2>
+            <p>Contrast, quiet zone, logo size, module spacing, and error correction all feed the live safety score.</p>
+          </div>
+          <div class="detail-diagram qr-scan-diagram" aria-hidden="true">
+            <span></span><span></span><span></span><i></i>
+          </div>
+        </article>
+
+        <article class="feature-slice reverse reveal">
+          <div>
+            <p class="eyebrow">Design system</p>
+            <h2>Modules, eyes, logo, frame, export.</h2>
+            <p>The QR object can shift from raw code to sticker, poster, Wi-Fi sign, or branded share card without losing its structure.</p>
+          </div>
+          <div class="detail-diagram qr-style-diagram" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Personal Toolbox</span>
+      <a href="../index.html#tools">Back to all tools</a>
+    </footer>
+
+    <div id="qrToast" class="tool-toast" role="status" aria-live="polite">QR exported</div>
+
+    <script src="../assets/js/tool-data.js" defer></script>
+    <script src="../assets/js/main.js" defer></script>
+    <script src="../assets/js/qr-code-studio.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Analyze image style, palette, mood, composition, lighting, prompt ingredients, and export a Style DNA Card.">
+    <title>Image Style Analyzer | Personal Toolbox</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+  </head>
+  <body class="tool-page tool-style-analyzer">
+    <header class="site-nav">
+      <a class="brand-mark" href="../index.html" aria-label="Personal Toolbox home">
+        <span class="brand-glyph" aria-hidden="true"></span>
+        <span>Toolbox</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="../index.html#tools">Tools</a>
+        <a href="#analyzer">Analyzer</a>
+        <a href="#details">Details</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="tool-hero section-band">
+        <div class="hero-copy reveal">
+          <div class="tool-title-row">
+            <span class="tool-hero-icon" data-icon="styleAnalyzer" aria-hidden="true"></span>
+            <p class="eyebrow">Image Style Analyzer</p>
+          </div>
+          <h1>See what makes an image feel the way it does.</h1>
+          <p class="hero-text">Upload references and break their style into color, light, composition, texture, mood, prompt ingredients, and a collectible Style DNA Card.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#analyzer">Analyze image</a>
+            <a class="button secondary" href="../index.html#tools">All tools</a>
+          </div>
+        </div>
+
+        <div class="tool-hero-visual reveal" aria-label="Image Style Analyzer interface illustration">
+          <div class="style-hero-object">
+            <div class="style-object-top">
+              <span></span>
+              <strong>Style DNA</strong>
+              <small>confidence 91</small>
+            </div>
+            <div class="style-hero-preview">
+              <span></span><i></i><b></b><em></em>
+            </div>
+            <div class="style-hero-palette">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="style-hero-focus"><i></i></div>
+            <div class="style-signature-pill">
+              <span></span>
+              soft future editorial
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="analyzer" class="section-band style-analyzer-band">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Workspace</p>
+          <h2>Upload. Read. Recreate.</h2>
+          <p>All analysis runs locally with canvas heuristics, so the tool is useful immediately and ready for deeper AI analysis later.</p>
+        </div>
+
+        <div class="style-workspace reveal">
+          <aside class="style-source-object">
+            <label class="drop-zone style-drop" for="styleImageInput" id="styleDrop">
+              <input id="styleImageInput" type="file" accept="image/*" multiple>
+              <span class="drop-icon" aria-hidden="true"></span>
+              <strong>Drop images or choose files</strong>
+              <small>Single, compare, before/after, or mood board analysis</small>
+            </label>
+
+            <div class="style-mode-toggle" role="group" aria-label="Analysis mode">
+              <button type="button" class="active" data-style-mode="single">Single</button>
+              <button type="button" data-style-mode="compare">Compare</button>
+              <button type="button" data-style-mode="mood">Mood board</button>
+              <button type="button" data-style-mode="adapt">Adapt</button>
+            </div>
+
+            <div class="style-url-row">
+              <label class="field">
+                <span>Image URL</span>
+                <input id="styleUrlInput" type="url" placeholder="https://example.com/image.jpg">
+              </label>
+              <button id="styleLoadUrl" type="button" class="button secondary">Load</button>
+            </div>
+
+            <div class="style-source-header">
+              <span>Sources</span>
+              <button id="styleClear" type="button">Clear</button>
+            </div>
+            <div id="styleSourceList" class="style-source-list"></div>
+
+            <div class="style-quick-stats" aria-label="Style quick stats">
+              <span>Images <strong id="styleImageCount">0</strong></span>
+              <span>Palette <strong id="stylePaletteCount">0</strong></span>
+              <span>Overlap <strong id="styleOverlap">0%</strong></span>
+            </div>
+          </aside>
+
+          <section class="style-preview-object">
+            <div class="preview-header">
+              <span id="stylePreviewTitle">No image loaded</span>
+              <small id="stylePreviewMeta">Drop or paste an image</small>
+            </div>
+            <div class="style-preview-stage" id="stylePreviewStage">
+              <img id="stylePreviewImage" alt="Selected image preview">
+              <canvas id="styleOverlayCanvas" aria-label="Focal point and composition overlay"></canvas>
+              <div class="style-empty-state">
+                <span></span>
+                <p>Paste, drop, or load a reference image.</p>
+              </div>
+            </div>
+            <div id="stylePaletteStrip" class="style-palette-strip"></div>
+            <div id="styleSummaryChips" class="style-summary-chips"></div>
+          </section>
+
+          <aside class="style-results-object">
+            <div class="style-result-tabs" role="tablist" aria-label="Style analysis panels">
+              <button type="button" class="active" data-style-tab="overview">Overview</button>
+              <button type="button" data-style-tab="color">Color</button>
+              <button type="button" data-style-tab="composition">Composition</button>
+              <button type="button" data-style-tab="lighting">Lighting</button>
+              <button type="button" data-style-tab="texture">Texture</button>
+              <button type="button" data-style-tab="mood">Mood</button>
+              <button type="button" data-style-tab="prompt">Prompt</button>
+              <button type="button" data-style-tab="dna">DNA Card</button>
+            </div>
+            <div id="styleResultsPanel" class="style-results-panel"></div>
+          </aside>
+        </div>
+
+        <div class="style-object-strip reveal" aria-label="Compact style analysis objects">
+          <button type="button" data-style-jump="color" class="style-mini-object">
+            <span>Palette Signature</span>
+            <i id="styleMiniPalette"></i>
+          </button>
+          <button type="button" data-style-jump="mood" class="style-mini-object">
+            <span>Mood Band</span>
+            <i id="styleMiniMood"></i>
+          </button>
+          <button type="button" data-style-jump="composition" class="style-mini-object">
+            <span>Focus Map</span>
+            <i id="styleMiniFocus"></i>
+          </button>
+          <button type="button" data-style-jump="dna" class="style-mini-object featured">
+            <span>Style DNA Card</span>
+            <i id="styleMiniDna"></i>
+          </button>
+        </div>
+      </section>
+
+      <section id="details" class="section-band feature-story">
+        <article class="feature-slice reveal">
+          <div>
+            <p class="eyebrow">Style DNA</p>
+            <h2>A collectible summary object.</h2>
+            <p>The DNA Card compresses palette, mood, lighting, composition, family, and prompt direction into one exportable black analysis module.</p>
+          </div>
+          <div class="detail-diagram style-dna-diagram" aria-hidden="true">
+            <span></span><i></i><b></b><em></em><strong></strong>
+          </div>
+        </article>
+
+        <article class="feature-slice reverse reveal">
+          <div>
+            <p class="eyebrow">Compare and mood boards</p>
+            <h2>Find shared language across references.</h2>
+            <p>Compare two images or combine a board to reveal shared colors, repeated moods, style overlap, and adaptation guidance.</p>
+          </div>
+          <div class="detail-diagram style-compare-diagram" aria-hidden="true">
+            <span></span><span></span><i></i><b></b>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Personal Toolbox</span>
+      <a href="../index.html#tools">Back to all tools</a>
+    </footer>
+
+    <canvas id="styleExportCanvas" hidden></canvas>
+    <div id="styleToast" class="tool-toast" role="status" aria-live="polite">Style copied</div>
+
+    <script src="../assets/js/tool-data.js" defer></script>
+    <script src="../assets/js/main.js" defer></script>
+    <script src="../assets/js/image-style-analyzer.js" defer></script>
+  </body>
+</html>

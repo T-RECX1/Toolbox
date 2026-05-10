@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Compress JPEG images locally with quality, scale, and artifact controls.">
+    <title>JPEG Compressor | Personal Toolbox</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+  </head>
+  <body class="tool-page tool-jpeg">
+    <header class="site-nav">
+      <a class="brand-mark" href="../index.html" aria-label="Personal Toolbox home">
+        <span class="brand-glyph" aria-hidden="true"></span>
+        <span>Toolbox</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="../index.html#tools">Tools</a>
+        <a href="#compressor">Compressor</a>
+        <a href="#details">Details</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="tool-hero section-band">
+        <div class="hero-copy reveal">
+          <div class="tool-title-row">
+            <span class="tool-hero-icon" data-icon="jpeg" aria-hidden="true"></span>
+            <p class="eyebrow">JPEG Compressor</p>
+          </div>
+          <h1>Control the file. Keep the image.</h1>
+          <p class="hero-text">Compress images locally with quality, scale, and block detail controls. Tune subtle size savings or push visible JPEG texture.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#compressor">Start compressing</a>
+            <a class="button secondary" href="../index.html#tools">All tools</a>
+          </div>
+        </div>
+
+        <div class="tool-hero-visual reveal" aria-label="JPEG compressor interface illustration">
+          <div class="jpeg-hero-object">
+            <div class="jpeg-object-top">
+              <span></span>
+              <strong>Compression field</strong>
+              <small>quality 72%</small>
+            </div>
+            <div class="jpeg-preview-tiles" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <div class="jpeg-quality-rail">
+              <i></i>
+              <b></b>
+            </div>
+            <div class="jpeg-size-pill">
+              <span></span>
+              1.8 MB -> 420 KB
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="compressor" class="section-band jpeg-compressor-band">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Compressor</p>
+          <h2>A local JPEG workbench with visible compression controls.</h2>
+          <p>Drop an image, adjust the output, and download a fresh JPEG. Everything happens in your browser.</p>
+        </div>
+
+        <div class="jpeg-workspace reveal">
+          <aside class="jpeg-control-object">
+            <label class="drop-zone jpeg-drop" for="jpegInput" id="jpegDrop">
+              <input id="jpegInput" type="file" accept="image/*">
+              <span class="drop-icon" aria-hidden="true"></span>
+              <strong>Drop an image or choose a file</strong>
+              <small>PNG, JPEG, WebP, and browser-supported image files</small>
+            </label>
+
+            <div class="jpeg-stats" aria-label="Compression stats">
+              <span>Original <strong id="jpegOriginalSize">0 KB</strong></span>
+              <span>Output <strong id="jpegOutputSize">0 KB</strong></span>
+              <span>Saved <strong id="jpegSavings">0%</strong></span>
+            </div>
+
+            <div class="jpeg-slider-stack">
+              <label class="range-field">
+                <span>Quality <strong id="jpegQualityValue">72%</strong></span>
+                <input id="jpegQuality" type="range" min="0.05" max="0.95" step="0.01" value="0.72">
+              </label>
+              <label class="range-field">
+                <span>Block detail <strong id="jpegDetailValue">100%</strong></span>
+                <input id="jpegDetail" type="range" min="0.08" max="1" step="0.01" value="1">
+              </label>
+              <label class="range-field">
+                <span>Output scale <strong id="jpegScaleValue">100%</strong></span>
+                <input id="jpegScale" type="range" min="0.15" max="1.5" step="0.05" value="1">
+              </label>
+              <label class="range-field">
+                <span>Passes <strong id="jpegPassesValue">1</strong></span>
+                <input id="jpegPasses" type="range" min="1" max="5" step="1" value="1">
+              </label>
+              <label class="range-field">
+                <span>Contrast <strong id="jpegContrastValue">100%</strong></span>
+                <input id="jpegContrast" type="range" min="80" max="240" step="5" value="100">
+              </label>
+              <label class="range-field">
+                <span>Saturation <strong id="jpegSaturationValue">100%</strong></span>
+                <input id="jpegSaturation" type="range" min="0" max="220" step="5" value="100">
+              </label>
+            </div>
+
+            <div class="action-row">
+              <button id="jpegDownload" class="button primary" disabled>Download JPEG</button>
+              <button id="jpegReset" class="button secondary" disabled>Reset</button>
+            </div>
+
+            <div class="progress-wrap jpeg-progress">
+              <div class="progress-label">
+                <span id="jpegStatus">Waiting for an image</span>
+                <span id="jpegDimensions">0 x 0</span>
+              </div>
+              <div class="progress-track">
+                <span id="jpegProgress"></span>
+              </div>
+            </div>
+          </aside>
+
+          <section class="jpeg-preview-object">
+            <div class="preview-header">
+              <span>Compressed preview</span>
+              <small id="jpegMeta">idle</small>
+            </div>
+            <div class="jpeg-preview-stage">
+              <canvas id="jpegCanvas"></canvas>
+              <p id="jpegEmpty">The compressed output appears here.</p>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="details" class="section-band feature-story">
+        <article class="feature-slice reveal">
+          <div>
+            <p class="eyebrow">Technique</p>
+            <h2>Downsample for block structure, then encode with intent.</h2>
+            <p>The compressor can reduce internal detail before scaling back up, creating stronger JPEG blocks when you want them.</p>
+          </div>
+          <div class="detail-diagram jpeg-block-diagram" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <i></i>
+          </div>
+        </article>
+
+        <article class="feature-slice reverse reveal">
+          <div>
+            <p class="eyebrow">Output</p>
+            <h2>Quality, scale, and passes stay visible.</h2>
+            <p>The green activity lives in the meters and active controls, so the workspace remains quiet and black.</p>
+          </div>
+          <div class="detail-diagram jpeg-meter-diagram" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Personal Toolbox</span>
+      <a href="../index.html#tools">Back to all tools</a>
+    </footer>
+
+    <script src="../assets/js/tool-data.js" defer></script>
+    <script src="../assets/js/main.js" defer></script>
+    <script src="../assets/js/jpeg-compressor.js" defer></script>
+  </body>
+</html>

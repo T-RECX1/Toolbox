@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Evolve uploaded images into ASCII art in the browser.">
+    <title>ASCII Generator | Personal Toolbox</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+  </head>
+  <body class="tool-page tool-ascii">
+    <header class="site-nav">
+      <a class="brand-mark" href="../index.html" aria-label="Personal Toolbox home">
+        <span class="brand-glyph" aria-hidden="true"></span>
+        <span>Toolbox</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="../index.html#tools">Tools</a>
+        <a href="#generator">Generator</a>
+        <a href="#details">Details</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="tool-hero section-band">
+        <div class="hero-copy reveal">
+          <div class="tool-title-row">
+            <span class="tool-hero-icon" data-icon="ascii" aria-hidden="true"></span>
+            <p class="eyebrow">ASCII Generator</p>
+          </div>
+          <h1>Turn pixels into evolving text.</h1>
+          <p class="hero-text">Upload an image and watch a character grid refine itself against the source using tiny local improvements.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#generator">Start generating</a>
+            <a class="button secondary" href="../index.html#tools">All tools</a>
+          </div>
+        </div>
+
+        <div class="tool-hero-visual reveal" aria-label="ASCII generator interface illustration">
+          <div class="ascii-hero-object">
+            <div class="ascii-object-top">
+              <span></span>
+              <strong>Glyph field</strong>
+              <small>error map</small>
+            </div>
+            <div class="ascii-hero-grid" aria-hidden="true">
+              <span>@</span><span>#</span><span>%</span><span>&</span><span>8</span><span>$</span>
+              <span>M</span><span>W</span><span>0</span><span>O</span><span>Q</span><span>D</span>
+              <span>+</span><span>*</span><span>=</span><span>-</span><span>:</span><span>.</span>
+              <span>A</span><span>S</span><span>C</span><span>I</span><span>I</span><span>+</span>
+            </div>
+            <div class="ascii-error-rail">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="ascii-loss-pill">
+              <span></span>
+              avg error 12.8
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="generator" class="section-band ascii-generator-band">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Generator</p>
+          <h2>A character grid that learns from the image.</h2>
+          <p>The tool samples luminance patches, caches glyph shapes, then keeps mutations only when they reduce local error.</p>
+        </div>
+
+        <div class="ascii-workspace reveal">
+          <aside class="ascii-control-object">
+            <label class="drop-zone ascii-drop" for="asciiInput" id="asciiDrop">
+              <input id="asciiInput" type="file" accept="image/*">
+              <span class="drop-icon" aria-hidden="true"></span>
+              <strong>Drop an image or choose a file</strong>
+              <small>Large images are scaled for smooth iteration</small>
+            </label>
+
+            <div class="ascii-stats" aria-label="Generator stats">
+              <span>Iterations <strong id="asciiIterations">0</strong></span>
+              <span>Error <strong id="asciiError">0.00</strong></span>
+              <span>Grid <strong id="asciiGridSize">0x0</strong></span>
+            </div>
+
+            <div class="control-grid ascii-controls" id="asciiControls">
+              <label class="field">
+                <span>Cell size</span>
+                <input id="asciiCellSize" type="number" min="5" max="28" step="1" value="12">
+              </label>
+              <label class="field">
+                <span>Font</span>
+                <select id="asciiFont">
+                  <option value="Consolas, monospace">Consolas</option>
+                  <option value="'Courier New', monospace">Courier New</option>
+                  <option value="'Lucida Console', monospace">Lucida Console</option>
+                  <option value="monospace">System mono</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Character set</span>
+                <select id="asciiCharset">
+                  <option value="dense" selected>Dense</option>
+                  <option value="classic">Classic</option>
+                  <option value="soft">Soft</option>
+                </select>
+              </label>
+              <label class="field toggle-field">
+                <span>Invert target</span>
+                <input id="asciiInvert" type="checkbox">
+              </label>
+            </div>
+
+            <div class="action-row">
+              <button id="asciiRun" class="button primary" disabled>Start</button>
+              <button id="asciiReset" class="button secondary" disabled>Reset</button>
+              <button id="asciiCopy" class="button secondary" disabled>Copy ASCII</button>
+            </div>
+
+            <div class="progress-wrap ascii-progress">
+              <div class="progress-label">
+                <span id="asciiStatus">Waiting for an image</span>
+                <span id="asciiProgressValue">0%</span>
+              </div>
+              <div class="progress-track">
+                <span id="asciiProgressBar"></span>
+              </div>
+            </div>
+          </aside>
+
+          <div class="ascii-canvas-grid">
+            <section class="ascii-canvas-object">
+              <div class="preview-header">
+                <span>Target</span>
+                <small>sampled source</small>
+              </div>
+              <div class="ascii-canvas-stage">
+                <canvas id="asciiSourceCanvas"></canvas>
+                <p id="asciiSourceEmpty">Upload an image to begin.</p>
+              </div>
+            </section>
+
+            <section class="ascii-canvas-object main-output">
+              <div class="preview-header">
+                <span>Evolving ASCII</span>
+                <small id="asciiOutputMeta">idle</small>
+              </div>
+              <div class="ascii-canvas-stage">
+                <canvas id="asciiOutputCanvas"></canvas>
+                <p id="asciiOutputEmpty">The character field appears here.</p>
+              </div>
+            </section>
+
+            <section class="ascii-canvas-object">
+              <div class="preview-header">
+                <span>Error field</span>
+                <small>red = mismatch</small>
+              </div>
+              <div class="ascii-canvas-stage">
+                <canvas id="asciiErrorCanvas"></canvas>
+                <p id="asciiErrorEmpty">Loss feedback appears here.</p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="details" class="section-band feature-story">
+        <article class="feature-slice reveal">
+          <div>
+            <p class="eyebrow">Technique</p>
+            <h2>Every glyph is treated like a tiny image patch.</h2>
+            <p>The browser pre-renders character shapes, compares them to source luminance, and swaps only the characters that improve the match.</p>
+          </div>
+          <div class="detail-diagram ascii-patch-diagram" aria-hidden="true">
+            <span>@</span><span>#</span><span>%</span><span>8</span><span>+</span><span>.</span>
+            <i></i>
+          </div>
+        </article>
+
+        <article class="feature-slice reverse reveal">
+          <div>
+            <p class="eyebrow">Feedback</p>
+            <h2>The error map shows where the text is still searching.</h2>
+            <p>Red and pink activity lives inside the data surfaces, keeping the page black while the generator feels alive.</p>
+          </div>
+          <div class="detail-diagram ascii-loss-diagram" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Personal Toolbox</span>
+      <a href="../index.html#tools">Back to all tools</a>
+    </footer>
+
+    <div id="asciiToast" class="tool-toast" role="status" aria-live="polite">ASCII copied</div>
+
+    <script src="../assets/js/tool-data.js" defer></script>
+    <script src="../assets/js/main.js" defer></script>
+    <script src="../assets/js/ascii-generator.js" defer></script>
+  </body>
+</html>
