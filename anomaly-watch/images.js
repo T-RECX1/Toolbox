@@ -1,0 +1,11 @@
+window.IMG_DATA={
+"back-patio":"assets/back-patio.jpg",
+"living-room":"assets/living-room.jpg",
+"kitchen":"assets/kitchen.jpg",
+"office":"assets/office.jpg",
+"dining-room":"assets/dining-room.jpg",
+"storage-closet":"assets/storage-closet.jpg",
+"utility-room":"assets/utility-room.jpg",
+"bathroom-a":"assets/bathroom-a.jpg",
+"bathroom-b":"assets/bathroom-b.jpg"
+};
