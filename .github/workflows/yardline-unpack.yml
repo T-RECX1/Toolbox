@@ -1,0 +1,25 @@
+name: Build Yardline site
+on:
+  push:
+    paths:
+      - 'yardline.bundle.tgz.b64'
+permissions:
+  contents: write
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack Yardline
+        run: |
+          rm -rf yardline
+          mkdir -p yardline
+          base64 -d yardline.bundle.tgz.b64 > /tmp/yardline.tgz
+          tar -xzf /tmp/yardline.tgz -C yardline
+      - name: Commit site files
+        run: |
+          git config user.name "YARDLINE Builder"
+          git config user.email "actions@users.noreply.github.com"
+          git add yardline
+          git commit -m "Build Yardline football game" || exit 0
+          git push
